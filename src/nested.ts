@@ -6,7 +6,17 @@ import { Question, QuestionType } from "./interfaces/question";
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    return copyofQuestions.filter(
+        (publishedQuestions: Question): boolean =>
+            publishedQuestions.published === true
+    );
 }
 
 /**
@@ -15,7 +25,19 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    return copyofQuestions.filter(
+        (nonEmptyQuestions: Question): boolean =>
+            nonEmptyQuestions.body !== "" ||
+            nonEmptyQuestions.expected !== "" ||
+            nonEmptyQuestions.options.length !== 0
+    );
 }
 
 /***
@@ -26,7 +48,18 @@ export function findQuestion(
     questions: Question[],
     id: number
 ): Question | null {
-    return null;
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    const idIndex = copyofQuestions.findIndex(
+        (matchingID: Question): boolean => matchingID.id === id
+    );
+
+    return idIndex >= 0 ? copyofQuestions[idIndex] : null;
 }
 
 /**
