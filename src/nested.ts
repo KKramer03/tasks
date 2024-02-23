@@ -118,7 +118,23 @@ export function sumPoints(questions: Question[]): number {
  * Consumes an array of questions and returns the sum total of the PUBLISHED questions.
  */
 export function sumPublishedPoints(questions: Question[]): number {
-    return 0;
+    let copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    copyofQuestions = copyofQuestions.filter(
+        (publishedQuestions: Question): boolean =>
+            publishedQuestions.published === true
+    );
+
+    return copyofQuestions.reduce(
+        (currentSum: number, currentQuestion: Question) =>
+            currentSum + currentQuestion.points,
+        0
+    );
 }
 
 /***
