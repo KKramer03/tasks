@@ -176,7 +176,23 @@ export function toCSV(questions: Question[]): string {
  * making the `text` an empty string, and using false for both `submitted` and `correct`.
  */
 export function makeAnswers(questions: Question[]): Answer[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    const answers: Answer[] = copyofQuestions.map(
+        (questiontoAnswer: Question): Answer => ({
+            questionId: questiontoAnswer.id,
+            text: "",
+            submitted: false,
+            correct: false
+        })
+    );
+
+    return answers;
 }
 
 /***
