@@ -271,6 +271,27 @@ export function renameQuestionById(
     );
 }
 
+function conditionalReplacer( //Helper function for changeQuestionTypeById
+    targetQuestion: Question,
+    givenQuestionType: QuestionType
+): Question {
+    let newOptionsList: string[];
+
+    if (givenQuestionType !== "multiple_choice_question") {
+        newOptionsList = [];
+    } else {
+        newOptionsList = [...targetQuestion.options];
+    }
+
+    const newQuestion: Question = {
+        ...targetQuestion,
+        options: newOptionsList,
+        type: givenQuestionType
+    };
+
+    return newQuestion;
+}
+
 /***
  * Consumes an array of Questions and produces a new array of Questions, where all
  * the Questions are the same EXCEPT for the one with the given `targetId`. That
@@ -278,6 +299,7 @@ export function renameQuestionById(
  * AND if the `newQuestionType` is no longer "multiple_choice_question" than the `options`
  * must be set to an empty list.
  */
+
 export function changeQuestionTypeById(
     questions: Question[],
     targetId: number,
@@ -290,31 +312,35 @@ export function changeQuestionTypeById(
         })
     );
 
-    return copyofQuestions.map(
-        //eslint conflicts with prettier indents here
+    const newQuestionList = copyofQuestions.map(
         (targetQuestion: Question): Question =>
             targetQuestion.id === targetId
-                ? {
-                      ...targetQuestion,
-                      type: newQuestionType,
-                      options:
-                          newQuestionType !== "multiple_choice_question"
-                              ? []
-                              : targetQuestion.options
-                  }
+                ? conditionalReplacer(targetQuestion, newQuestionType)
                 : targetQuestion
     );
+
+    return newQuestionList;
 }
 
-function optionReplacer( //Helper function for below function
-    optionsOriginal: string[],
+function editHelper( //Helper function for below function
+    givenQuestion: Question,
     optionIndex: number,
     newOptionChoice: string
-): string[] {
-    const optionsCopy = [...optionsOriginal];
-    optionsCopy.splice(optionIndex, 1, newOptionChoice);
+): Question {
+    let newQuestion: Question;
+    const optionsCopy = [...givenQuestion.options];
 
-    return optionsCopy;
+    if (optionIndex === -1) {
+        newQuestion = {
+            ...givenQuestion,
+            options: [...optionsCopy, newOptionChoice]
+        };
+    } else {
+        optionsCopy.splice(optionIndex, 1, newOptionChoice);
+        newQuestion = { ...givenQuestion, options: [...optionsCopy] };
+    }
+
+    return newQuestion;
 }
 
 /**
@@ -344,17 +370,7 @@ export function editOption(
     return copyofQuestions.map(
         (targetQuestion: Question): Question =>
             targetQuestion.id === targetId
-                ? {
-                      ...targetQuestion,
-                      options:
-                          targetOptionIndex === -1
-                              ? [...targetQuestion.options, newOption]
-                              : optionReplacer(
-                                    [...targetQuestion.options],
-                                    targetOptionIndex,
-                                    newOption
-                                )
-                  }
+                ? editHelper(targetQuestion, targetOptionIndex, newOption)
                 : targetQuestion
     );
 }
