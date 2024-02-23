@@ -1,5 +1,6 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { duplicateQuestion, makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -242,7 +243,7 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    return [];
+    return [...questions, makeBlankQuestion(id, name, type)];
 }
 
 /***
@@ -255,7 +256,19 @@ export function renameQuestionById(
     targetId: number,
     newName: string
 ): Question[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    return copyofQuestions.map(
+        (targetQuestion: Question): Question =>
+            targetQuestion.id === targetId
+                ? { ...targetQuestion, name: newName }
+                : targetQuestion
+    );
 }
 
 /***
@@ -270,7 +283,38 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType
 ): Question[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    return copyofQuestions.map(
+        //eslint conflicts with prettier indents here
+        (targetQuestion: Question): Question =>
+            targetQuestion.id === targetId
+                ? {
+                      ...targetQuestion,
+                      type: newQuestionType,
+                      options:
+                          newQuestionType !== "multiple_choice_question"
+                              ? []
+                              : targetQuestion.options
+                  }
+                : targetQuestion
+    );
+}
+
+function optionReplacer( //Helper function for below function
+    optionsOriginal: string[],
+    optionIndex: number,
+    newOptionChoice: string
+): string[] {
+    const optionsCopy = [...optionsOriginal];
+    optionsCopy.splice(optionIndex, 1, newOptionChoice);
+
+    return optionsCopy;
 }
 
 /**
@@ -283,13 +327,36 @@ export function changeQuestionTypeById(
  * Remember, if a function starts getting too complicated, think about how a helper function
  * can make it simpler! Break down complicated tasks into little pieces.
  */
+
 export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    return copyofQuestions.map(
+        (targetQuestion: Question): Question =>
+            targetQuestion.id === targetId
+                ? {
+                      ...targetQuestion,
+                      options:
+                          targetOptionIndex === -1
+                              ? [...targetQuestion.options, newOption]
+                              : optionReplacer(
+                                    [...targetQuestion.options],
+                                    targetOptionIndex,
+                                    newOption
+                                )
+                  }
+                : targetQuestion
+    );
 }
 
 /***
@@ -303,5 +370,25 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number
 ): Question[] {
-    return [];
+    const copyofQuestions = questions.map(
+        (questionsCopy: Question): Question => ({
+            ...questionsCopy,
+            options: [...questionsCopy.options]
+        })
+    );
+
+    const matchingIndex = copyofQuestions.findIndex(
+        (matchingQuestion: Question): boolean =>
+            matchingQuestion.id === targetId
+    );
+
+    copyofQuestions.splice(
+        matchingIndex + 1,
+        0,
+        duplicateQuestion(newId, questions[matchingIndex])
+    );
+
+    const duplicateQuestionArray = copyofQuestions;
+
+    return duplicateQuestionArray;
 }
