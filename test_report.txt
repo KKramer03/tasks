@@ -16,8 +16,8 @@ PASS src/arrays.test.ts
 PASS src/nested.test.ts
 PASS src/functions.test.ts
 PASS src/components/StartAttempt.test.tsx
-PASS src/components/ChangeType.test.tsx
 PASS src/components/TwoDice.test.tsx
+PASS src/components/ChangeType.test.tsx
 PASS src/components/CycleHoliday.test.tsx
 PASS src/components/Counter.test.tsx
 PASS src/components/RevealAnswer.test.tsx
@@ -47,5 +47,5 @@ All files          |     100 |      100 |     100 |     100 |
 Test Suites: 11 passed, 11 total
 Tests:       93 passed, 93 total
 Snapshots:   0 total
-Time:        5.243 s
+Time:        5.185 s
 Ran all test suites.
