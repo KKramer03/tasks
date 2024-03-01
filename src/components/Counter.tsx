@@ -10,4 +10,3 @@ export function Counter(): JSX.Element {
         </span>
     );
 }
-// update

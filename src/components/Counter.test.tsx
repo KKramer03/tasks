@@ -37,4 +37,3 @@ describe("Counter Component tests", () => {
         expect(valueText).toBeInTheDocument();
     });
 });
-// update
