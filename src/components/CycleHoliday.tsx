@@ -33,5 +33,3 @@ export function CycleHoliday(): JSX.Element {
         </div>
     );
 }
-// update
-// update

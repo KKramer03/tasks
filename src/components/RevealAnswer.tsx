@@ -11,4 +11,3 @@ export function RevealAnswer(): JSX.Element {
         </div>
     );
 }
-// update

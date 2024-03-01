@@ -51,4 +51,3 @@ describe("ChangeType Component tests", () => {
         expect(typeTextMC).toBeNull();
     });
 });
-// update
