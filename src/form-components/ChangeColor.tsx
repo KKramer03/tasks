@@ -9,21 +9,11 @@ const Colors = [
     "magenta",
     "purple",
     "turquoise",
-    "green"
+    "palegreen"
 ];
 
 export function ChangeColor(): JSX.Element {
     const [color, setColor] = useState<string>(Colors[0]);
-    const colorCodes: Record<string, string> = {
-        red: "#FF0000",
-        blue: "#1F51FF",
-        violet: "#7F00FF",
-        cyan: "#00FFFF",
-        magenta: "#FF00FF",
-        purple: "#C3B1E1",
-        turquoise: "#40E0D0",
-        green: "#0FFF50"
-    };
 
     const colorsList = Colors.map((currentColor: string) => (
         <Form.Check
@@ -35,7 +25,7 @@ export function ChangeColor(): JSX.Element {
                 setColor(e.target.value)
             }
             label={
-                <span style={{ backgroundColor: colorCodes[currentColor] }}>
+                <span style={{ backgroundColor: currentColor }}>
                     {currentColor}
                 </span>
             }
@@ -50,7 +40,7 @@ export function ChangeColor(): JSX.Element {
             <p>
                 You have chosen{" "}
                 <span
-                    style={{ backgroundColor: colorCodes[color] }}
+                    style={{ backgroundColor: color }}
                     data-testid="colored-box"
                 >
                     {color}
