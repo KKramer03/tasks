@@ -13,6 +13,7 @@ export function CheckAnswer({
 
     return (
         <div>
+            <h3>Check Answer</h3>
             <Form.Group controlId="formGivenAnswer" as={Row}>
                 <Form.Label column sm={2}>
                     Answer:

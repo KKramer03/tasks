@@ -36,6 +36,7 @@ export function ChangeColor(): JSX.Element {
 
     return (
         <div>
+            <h3>Change Color</h3>
             {colorsList}
             <p>
                 You have chosen{" "}
@@ -46,7 +47,6 @@ export function ChangeColor(): JSX.Element {
                     {color}
                 </span>
             </p>
-            <h3>Change Color</h3>
         </div>
     );
 }

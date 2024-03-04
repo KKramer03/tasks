@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 
 export function EditMode(): JSX.Element {
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -31,15 +31,19 @@ export function EditMode(): JSX.Element {
                 />
             )}
             {editMode && (
-                <Form.Group controlId="formStudentNameStatus">
-                    <Form.Label>Student Information</Form.Label>
-                    <Form.Control
-                        value={name}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setName(e.target.value)
-                        }
-                        disabled={!editMode}
-                    />
+                <Form.Group controlId="formStudentNameStatus" as={Row}>
+                    <Form.Label column sm={2}>
+                        Student Information
+                    </Form.Label>
+                    <Col>
+                        <Form.Control
+                            value={name}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => setName(e.target.value)}
+                            disabled={!editMode}
+                        />
+                    </Col>
                 </Form.Group>
             )}
         </div>
