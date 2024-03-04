@@ -4,19 +4,25 @@ import { Form } from "react-bootstrap";
 const Colors = [
     "red",
     "blue",
-    "purple",
+    "violet",
+    "cyan",
     "magenta",
-    "pink",
-    "orange",
-    "black",
-    "white"
+    "purple",
+    "turquoise",
+    "green"
 ];
 
 export function ChangeColor(): JSX.Element {
     const [color, setColor] = useState<string>(Colors[0]);
     const colorCodes: Record<string, string> = {
         red: "#FF0000",
-        blue: "#00FFFF"
+        blue: "#1F51FF",
+        violet: "#7F00FF",
+        cyan: "#00FFFF",
+        magenta: "#FF00FF",
+        purple: "#C3B1E1",
+        turquoise: "#40E0D0",
+        green: "#0FFF50"
     };
 
     const colorsList = Colors.map((currentColor: string) => (
@@ -28,7 +34,11 @@ export function ChangeColor(): JSX.Element {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setColor(e.target.value)
             }
-            label={<p style={{ backgroundColor: { color } }}>{currentColor}</p>}
+            label={
+                <span style={{ backgroundColor: colorCodes[currentColor] }}>
+                    {currentColor}
+                </span>
+            }
             value={currentColor}
             checked={color === currentColor}
         />
@@ -38,7 +48,13 @@ export function ChangeColor(): JSX.Element {
         <div>
             {colorsList}
             <p>
-                You have chosen <p>{color}</p>
+                You have chosen{" "}
+                <span
+                    style={{ backgroundColor: colorCodes[color] }}
+                    data-testid="colored-box"
+                >
+                    {color}
+                </span>
             </p>
             <h3>Change Color</h3>
         </div>
